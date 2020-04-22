@@ -1,0 +1,429 @@
+#--------------------------------------------------------
+#
+#	Elemental Monsters script
+#	For Minecraft Spigot Servers
+#	Requires Skripts plugin
+#	by mivanit
+#
+#--------------------------------------------------------
+options:
+	#--------------------------------------------------------
+	#Logo displayed before spawning messages
+	logo: &b&lElemental Monsters&7»
+	
+	#---------------
+	#Messages
+	#---------------
+	summonmsg: &aYou have successfully summoned # mob name added later
+	
+	
+	#---------------
+	#Enable/Disable mob spawning
+	#(they can still be summoned through commands or the gui)
+	#---------------
+	demon: true
+	wraith: true
+	ogre: true
+	eyeball: true
+	elementals: true
+	caravans: true
+	
+	version: 0.3
+	
+
+on join:
+	#============================================
+	#				item defenitions
+	#============================================
+	
+	set {wep_dscythe} to diamond axe with custom NBT "{display:{Name:""Dark Scythe"",Lore:[""A Demon's Dark Scythe"",""Powerful against the Undead""]},ench:[{id:19,lvl:1},{id:17,lvl:7},{id:34,lvl:1},{id:70,lvl:1},{id:16,lvl:4}]}"
+	
+	set {skull_demon} to player head with custom NBT "{display:{Name:""&4Demon Skull""},SkullOwner:{Id:""9eee34ea-2c9f-47a1-98f8-34105af45215"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVmMzE3ZmFhOGRjZjEzYTJmYzE4ZWEwYmYwYTA3MzZhNGZmOTVjMjg1MDFiYjFjZmE0MzAyNTQyMjc4ZjhhIn19fQ==""}]}}}"
+	set {skull_ogre} to player head with custom NBT "{display:{Name:""&2Ogre Head""},SkullOwner:{Id:""4a956202-c671-42a4-9a9a-1ca92a0c3ed8"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzI5NWE0YWM0YjllZDZlZGM4NGExMTU1MDA1NWYwNmI5Mzc3MjllNTAxZTU1MTZjMDRmZWY2ZDZmNSJ9fX0=""}]}}}"
+	set {skull_wraith} to player head with custom NBT "{display:{Name:""Wraith Skull""},SkullOwner:{Id:""394c8f46-c313-4b9c-ad14-7be4d6760995"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmRhYTZhOTgzNDIxNzliNDU2ZjU2YTQ0NTM0OWM3ZWVlNmYxYTdhNTkyN2E0OTBjNDQyOTNiMGFhNzc4YmUyIn19fQ==""}]}}}"
+	set {skull_eye} to player head with custom NBT "{display:{Name:""Eye of Cthulhu""},SkullOwner:{Id:""681e626c-f0e3-4a48-a675-912d9bc95eda"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTdkYjE5MjNkMDNjNGVmNGU5ZjZlODcyYzVhNmFkMjU3OGIxYWZmMmIyODFmYmMzZmZhNzQ2NmM4MjVmYjkifX19""}]}}}"
+
+	
+	set {skull_elemental_ender} to player head with custom NBT "{ench:[{id:35,lvl:1},{id:48,lvl:1}],display:{Name:""&5Magic Elemental""},SkullOwner:{Id:""19c11815-34f9-4f3a-86e8-a6c8f0cf8221"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWNlNGNlZDIxYWJhNTYzM2M5ZjFkMWZlMjAzZmExOTlhZmY5YzFiNmY4NmI3ZDY2NTMxNmZiZmM3OGY5NCJ9fX0=""}]}}}"
+	set {skull_elemental_aqua} to player head with custom NBT "{ench:[{id:5,lvl:2},{id:6,lvl:2},{id:8,lvl:10}],display:{Name:""&3Water Elemental""},SkullOwner:{Id:""5490582e-2f76-48fc-8872-87202ca74e94"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWI3ZmM4ZWY5NmYyYzI5MGEwNjhhYzk5NmNiOGU5NDMyMTYzNjgwNTM1ZjQyZjEyZDc5ZGM1MzdmOGFhNiJ9fX0=""}]}}}"
+	set {skull_elemental_fire} to player head with custom NBT "{ench:[{id:1,lvl:3},{id:20,lvl:3}],display:{Name:""&4Magma Elemental""},SkullOwner:{Id:""30da8ea2-49cb-43ad-b27e-a5f2d313cd54"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWRlMDk1MzMyNzIwMjE1Y2E5Yjg1ZTdlYWNkMWQwOTJiMTY5N2ZhZDM0ZDY5NmFkZDk0ZDNiNzA5NzY3MDJjIn19fQ==""}]}}}"
+	set {skull_elemental_green} to player head with custom NBT "{ench:[{id:0,lvl:2}],display:{Name:""&2Forest Elemental""},SkullOwner:{Id:""c69c8bd0-ffeb-41bc-a471-3966af19071b"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRhNjJiZGEzYmM3ZmNmMWMxNTBmNGI0YzhjZWNhYzJkNGU0Mjk1MjNjNTE1MDk1MzRhYWYyNzNhODEifX19""}]}}}"
+	set {skull_elemental_frost} to player head with custom NBT "{ench:[{id:9,lvl:2}],display:{Name:""&bFrost Elemental""},SkullOwner:{Id:""7d2ac138-ce81-435c-be9d-93d6957b5f1d"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMDQxNjQ2YzAzZjhiNGNkYmJmODFmNzE2NGRkNjNhMjljOTYzYTZjNmNlYmZlMWNhZjE5YTJlZTkyYyJ9fX0=""}]}}}"
+	set {skull_elemental_sand} to player head with custom NBT "{ench:[{id:0,lvl:2}],display:{Name:""&eSand Elemental""},SkullOwner:{Id:""00f935bc-faf7-48ad-858f-9cc930fc1d84"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTBmNDljYjU3NzU3MWY2MWY5ZDM0OWFiMDJhNDRkNGM1NmU4NzE3NzJlMTRjMzgzMWEzZGY4ZGY2NGEifX19""}]}}}"
+	
+	set {sword_blue} to stone sword with name "Light-Blue Concrete Sword"
+	set {sword_orange} to stone sword with custom NBT "{ench:[{id:20,lvl:1}],display:{Name:""Orange Concrete Sword""}}" 
+	set {sword_green} to stone sword with name "Lime Concrete Sword"
+	set {sword_white} to stone sword with name "White Concrete Sword"
+	set {sword_sand} to stone sword with name "Sandstone Sword"
+	
+#============================================
+#				Mob defenitions
+#============================================
+
+function spawn_demon(loc: location):
+	spawn a wither skeleton at {_loc}
+	set name of the last spawned wither skeleton to "&4Demon"
+	
+	apply resistance 3 to the last spawned wither skeleton for 9999 minutes
+	apply strength 4 to the last spawned wither skeleton for 9999 minutes
+	apply health boost 100 to the last spawned wither skeleton for 9999 minutes
+	
+	set tool of last spawned wither skeleton to {wep_dscythe}
+	
+	set helmet of last spawned wither skeleton to {skull_demon}
+	set chestplate of last spawned wither skeleton to leather chestplate with name "&cDemon Chestplate"
+	dye last spawned wither skeleton's chestplate (73, 3, 0)
+	set leggings of last spawned wither skeleton to leather leggings with name "&cDemon Leggings"
+	dye last spawned wither skeleton's leggings (140, 5, 0)
+	set boots of last spawned wither skeleton to leather boots with name "&cDemon Boots"
+	dye last spawned wither skeleton's boots (73, 3, 0)
+
+function spawn_wraith(loc: location):
+	spawn a wither skeleton at {_loc}
+	set name of the last spawned wither skeleton to "&8Wraith"
+	
+	apply invisibility 1 to the last spawned wither skeleton for 9999 minutes
+	apply strength 1 to the last spawned wither skeleton for 9999 minutes
+	apply jump boost 2 to the last spawned wither skeleton for 9999 minutes
+	
+	set tool of last spawned wither skeleton to wooden hoe with name "Wraith Scythe"
+	set helmet of last spawned wither skeleton to {skull_wraith}
+	set chestplate of last spawned wither skeleton to leather chestplate with name "&cWraith Rags"
+	dye chestplate of last spawned wither skeleton (82, 64, 135)
+	delete leggings of last spawned wither skeleton
+	delete boots of last spawned wither skeleton
+	
+function spawn_ogre(loc: location):
+	spawn a zombie at {_loc}
+	set name of the last spawned zombie to "&2Ogre"
+	chance of 5%:
+		set name of the last spawned zombie to "&2SHREK"
+		
+	#apply health boost 10 to the last spawned zombie for 9999 minutes
+	apply hunger 1 to the last spawned zombie for 9999 minutes
+		
+	set helmet of last spawned zombie to {skull_ogre}
+	set chestplate of the last spawned zombie to leather chestplate with name "&aOgre Chestplate"
+	dye the last spawned zombie's chestplate green
+	set leggings of the last spawned zombie to leather leggings with name "&aOgre Leggings"
+	dye the last spawned zombie's leggings green
+	set boots of the last spawned zombie to leather boots with name "&cDemon Boots"
+	dye the last spawned zombie's boots green
+	
+function spawn_elemental(loc: location , etype: number):
+	spawn a zombie pigman at {_loc}
+
+	apply resistance 2 to the last spawned zombie pigman for 9999 minutes
+	apply slowness 1 to the last spawned zombie pigman for 9999 minutes
+	apply invisibility 1 to the last spawned zombie pigman for 9999 minutes
+	
+	#default elemental is magic
+
+	set name of the last spawned zombie pigman to "&5Magic Elemental"
+		
+	set tool of the last spawned zombie pigman to blaze rod with name "&5Magic Elemental Staff &k00"
+	set helmet of the last spawned zombie pigman to {skull_elemental_ender}
+	set chestplate of the last spawned zombie pigman to leather chestplate with name "&5Magic Elemental Robe"
+	dye the last spawned zombie pigman's chestplate (110, 0, 255)
+	set the last spawned zombie pigman's boots to leather boots with name "&5Elemental boots"
+	dye the last spawned zombie pigman's boots (110, 0, 255)
+	delete leggings of last spawned zombie pigman
+	
+	if {_etype} is 1:
+		#set name of the last spawned zombie pigman to "&1Water Elemental"
+		apply water breathing 1 to the last spawned zombie pigman for 9999 minutes
+		set tool of the last spawned zombie pigman to {sword_blue}
+		set helmet of the last spawned zombie pigman to {skull_elemental_aqua}
+		set chestplate of the last spawned zombie pigman to leather chestplate with name "&3Water Elemental Robe"
+		dye the last spawned zombie pigman's chestplate (0, 67, 255)
+		dye the last spawned zombie pigman's boots (0, 67, 255)
+	else if {_etype} is 2:
+		#set name of the last spawned zombie pigman to "&4Magma Elemental"
+		apply fire resistance 1 to the last spawned zombie pigman for 9999 minutes
+		set tool of the last spawned zombie pigman to {sword_orange}
+		set helmet of the last spawned zombie pigman to {skull_elemental_fire}
+		set chestplate of the last spawned zombie pigman to leather chestplate with name "&4Magma Elemental Robe"
+		dye the last spawned zombie pigman's chestplate (255, 67, 0)
+		dye the last spawned zombie pigman's boots (255, 67, 0)
+	else if {_etype} is 3:
+		#set name of the last spawned zombie pigman to "&2Life Elemental"
+		set tool of the last spawned zombie pigman to {sword_green}
+		set helmet of the last spawned zombie pigman to {skull_elemental_green}
+		set chestplate of the last spawned zombie pigman to leather chestplate with name "&2Life Elemental Robe"
+		dye the last spawned zombie pigman's chestplate (13, 186, 13)
+		dye the last spawned zombie pigman's boots (13, 186, 13)
+	else if {_etype} is 4:
+		#set name of the last spawned zombie pigman to "&bFrost Elemental"
+		set tool of the last spawned zombie pigman to {sword_white}
+		set helmet of the last spawned zombie pigman to {skull_elemental_frost}
+		set chestplate of the last spawned zombie pigman to leather chestplate with name "&bFrosts Elemental Robe"
+		dye the last spawned zombie pigman's chestplate (71, 188, 198)
+		dye the last spawned zombie pigman's boots (71, 188, 198)
+	else if {_etype} is 5:
+		#set name of the last spawned zombie pigman to "&bDesert Elemental"
+		set tool of the last spawned zombie pigman to {sword_sand}
+		set helmet of the last spawned zombie pigman to {skull_elemental_sand}
+		set chestplate of the last spawned zombie pigman to leather chestplate with name "&eDesert Elemental Robe"
+		dye the last spawned zombie pigman's chestplate (186, 143, 65)
+		dye the last spawned zombie pigman's boots (186, 143, 65)
+	
+	#enchant the last spawned zombie pigmans's chestplate with power 1
+	#enchant the last spawned zombie pigmans's boots with power 1
+	
+function spawn_eyeball(loc: location):
+	#spawn a vex at {_loc} #with custom NBT "{Attributes:[{Name:""generic.followRange"",Base:500},{Name:""generic.movementSpeed"",Base:0.2f},{Name:""generic.attackDamage"",Base:0}],ActiveEffects:[{Id:14,Amplifier:0,Duration:2147483647}],Passengers:[{id:""minecraft:zombie"",FallFlying:1,ArmorItems:[{},{},{},{id:""minecraft:skull"",Damage:3,tag:{display:{Name:""Eye of Cthulhu""}},Count:1b,tag:{SkullOwner:{Id:""681e626c-f0e3-4a48-a675-912d9bc95eda"",Properties:{textures:[{Value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTdkYjE5MjNkMDNjNGVmNGU5ZjZlODcyYzVhNmFkMjU3OGIxYWZmMmIyODFmYmMzZmZhNzQ2NmM4MjVmYjkifX19""}]}}}}],Attributes:[{Name:""generic.followRange"",Base:500},{Name:""generic.attackDamage"",Base:8}],IsBaby:1,ActiveEffects:[{Id:8,Amplifier:4,Duration:2147483647},{Id:14,Amplifier:0,Duration:2147483647}]}]}"
+	spawn a baby zombie at {_loc}
+	#apply invisibility 1 to the last spawned vex for 9999 minutes
+	#apply weakness 99 to the last spawned vex for 9999 minutes
+	apply slowness 2 to the last spawned baby zombie for 9999 minutes
+	apply invisibility 1 to the last spawned zombie for 9999 minutes
+	set helmet of the last spawned zombie to {skull_eye}
+	delete chestplate of last spawned zombie
+	delete leggings of last spawned zombie
+	delete boots of last spawned zombie
+	#make the last spawned zombie ride the last spawned vex
+	apply jump boost 5 to the last spawned zombie	
+	
+
+function spawn_caravan_trader(loc: location):
+	spawn a villager at {_loc}
+	set name of the last spawned villager to "Caravan Trader"
+
+function spawn_caravan_guard(loc: location):
+	spawn a iron golem at {_loc}
+	set name of the last spawned iron golem to "Caravan Guard"
+	apply speed 1 to the last spawned iron golem for 3 minutes
+	apply resistance 2 to the last spawned iron golem for 3 minutes
+	apply strength 5 to the last spawned iron golem for 3 minutes
+
+function spawn_caravan_llama(loc: location):
+	spawn a llama at {_loc}
+	set name of the last spawned llama to "Caravan Llama"
+	
+	
+#old /summon usage
+#this doesnt work for random spawning because world cant be specified when using console
+
+#function summon_demon(loc: location):
+	# old weak one
+	#/summon minecraft:wither_skeleton %{_loc}'s x-pos% %{_loc}'s y-pos% %{_loc}'s z-pos% {CustomName:Demon,CustomNameVisible:1,PersistenceRequired:0b,LeftHanded:0,FallFlying:1,ArmorItems:[{id:"minecraft:leather_boots",Count:1,tag:{display:{color:1310977}}},{id:"minecraft:leather_leggings",Count:1,tag:{display:{color:7340032}}},{id:"minecraft:leather_chestplate",Count:1,tag:{display:{color:4653313}}},{id:skull,Damage:3,Count:1b,tag:{SkullOwner:{Id:"9eee34ea-2c9f-47a1-98f8-34105af45215",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVmMzE3ZmFhOGRjZjEzYTJmYzE4ZWEwYmYwYTA3MzZhNGZmOTVjMjg1MDFiYjFjZmE0MzAyNTQyMjc4ZjhhIn19fQ=="}]}}}}],CanPickUpLoot:0b,Health:100,Attributes:[{Name:"generic.followRange",Base:80},{Name:"generic.knockbackResistance",Base:0.2f},{Name:"generic.movementSpeed",Base:0.4f},{Name:"generic.attackDamage",Base:10}],HandItems:[{id:"minecraft:diamond_axe",tag:{display:{Name:"Dark Scythe",Lore:["A Demon's Dark Scythe","Powerful against the Undead"]},ench:[{id:16,lvl:5},{id:17,lvl:5},{id:21,lvl:1},{id:70,lvl:1}]},Count:1},{}],HandDropChances:[0.75F,0F],ActiveEffects:[{Id:5,Amplifier:2,Duration:2147483647},{Id:11,Amplifier:1,Duration:2147483647}]}
+	
+	#new one
+	#command "summon minecraft:wither_skeleton %{_loc}'s x-pos% %{_loc}'s y-pos% %{_loc}'s z-pos% {CustomName:Demon,CustomNameVisible:1,PersistenceRequired:0b,LeftHanded:0,FallFlying:1,ArmorItems:[{tag:{ench:[{id:0,lvl:4}],display:{color:1310977}},id:"minecraft:leather_boots",Count:1},{tag:{ench:[{id:0,lvl:4}],display:{color:7340032}},id:"minecraft:leather_leggings",Count:1},{id:"minecraft:leather_chestplate",Count:1,tag:{ench:[{id:0,lvl:4},{id:7,lvl:3}],display:{color:4653313}}},{id:skull,Damage:3,Count:1b,tag:{SkullOwner:{Id:"9eee34ea-2c9f-47a1-98f8-34105af45215",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVmMzE3ZmFhOGRjZjEzYTJmYzE4ZWEwYmYwYTA3MzZhNGZmOTVjMjg1MDFiYjFjZmE0MzAyNTQyMjc4ZjhhIn19fQ=="}]}}}}],CanPickUpLoot:0b,Health:100,Attributes:[{Name:"generic.followRange",Base:50},{Name:"generic.knockbackResistance",Base:0.2f},{Name:"generic.movementSpeed",Base:0.4f},{Name:"generic.attackDamage",Base:10}],HandItems:[{id:"minecraft:diamond_axe",tag:{display:{Name:"Dark Scythe",Lore:["A Demon's Dark Scythe","Powerful against the Undead"]},ench:[{id:16,lvl:5},{id:17,lvl:5},{id:21,lvl:1},{id:70,lvl:1}]},Count:1},{}],HandDropChances:[2F,0F],ActiveEffects:[{Id:5,Amplifier:3,Duration:2147483647},{Id:11,Amplifier:1,Duration:2147483647}]}"
+	
+#function summon_ogre(loc: location):
+	#command "summon minecraft:zombie %{_loc}'s x-pos% %{_loc}'s y-pos% %{_loc}'s z-pos% {CustomName:Ogre,CustomNameVisible:1,PersistenceRequired:0b,LeftHanded:0,Health:30,Attributes:[{Name:"generic.followRange",Base:500},{Name:"generic.knockbackResistance",Base:0.04f},{Name:"generic.movementSpeed",Base:0.2f}],IsBaby:0,CanBreakDoors:1,ArmorItems:[{tag:{display:{Name:"Ogre Boots",Lore:["smelly"],color:4022528}},id:"minecraft:leather_boots",Count:1},{tag:{display:{Name:"Ogre Pants",Lore:["Ewww"],color:4022528}},Count:1,id:"minecraft:leather_leggings"},{tag:{display:{Name:"Ogre Tunic",color:4022528}},Count:1,id:"minecraft:leather_chestplate"},{id:skull,Damage:3,Count:1b,tag:{SkullOwner:{Id:"4a956202-c671-42a4-9a9a-1ca92a0c3ed8",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzI5NWE0YWM0YjllZDZlZGM4NGExMTU1MDA1NWYwNmI5Mzc3MjllNTAxZTU1MTZjMDRmZWY2ZDZmNSJ9fX0="}]}}}}],ArmorDropChances:[0F,0.15F,0.15F,0F],ActiveEffects:[{Id:17,Amplifier:0,Duration:2147483647}]}"
+	
+#function summon_wraith(loc: location):
+	#command "summon minecraft:wither_skeleton %{_loc}'s x-pos% %{_loc}'s y-pos% %{_loc}'s z-pos% {CustomName:Wraith,CustomNameVisible:1,FallFlying:1,ArmorItems:[{},{},{id:"minecraft:leather_chestplate",Count:1,tag:{display:{Name:"Wraith Rags",color:4139865},ench:[{id:10,lvl:1}]}},{id:skull,Damage:3,Count:1b,tag:{SkullOwner:{Id:"394c8f46-c313-4b9c-ad14-7be4d6760995",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmRhYTZhOTgzNDIxNzliNDU2ZjU2YTQ0NTM0OWM3ZWVlNmYxYTdhNTkyN2E0OTBjNDQyOTNiMGFhNzc4YmUyIn19fQ=="}]}}}}],Health:40,Attributes:[{Name:"generic.attackDamage",Base:6}],HandItems:[{id:"minecraft:wooden_hoe",tag:{display:{Name:"Wraith Scythe"},ench:[{id:16,lvl:1},{id:17,lvl:2}]},Count:1},{}],HandDropChances:[0.01F,0F],ArmorDropChances:[0F,0F,0.01F,0F],ActiveEffects:[{Id:8,Amplifier:1,Duration:2147483647},{Id:14,Amplifier:0,Duration:2147483647,ShowParticles:0b}]}"
+	
+#function summon_eyeball(loc: location):
+	#command "summon minecraft:vex %{_loc}'s x-pos% %{_loc}'s y-pos% %{_loc}'s z-pos% {Attributes:[{Name:"generic.followRange",Base:500},{Name:"generic.movementSpeed",Base:0.2f},{Name:"generic.attackDamage",Base:0}],ActiveEffects:[{Id:14,Amplifier:0,Duration:2147483647}],Passengers:[{id:"minecraft:zombie",FallFlying:1,ArmorItems:[{},{},{},{id:"minecraft:skull",Damage:3,tag:{display:{Name:"Eye of Cthulhu"}},Count:1b,tag:{SkullOwner:{Id:"681e626c-f0e3-4a48-a675-912d9bc95eda",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTdkYjE5MjNkMDNjNGVmNGU5ZjZlODcyYzVhNmFkMjU3OGIxYWZmMmIyODFmYmMzZmZhNzQ2NmM4MjVmYjkifX19"}]}}}}],Attributes:[{Name:"generic.followRange",Base:500},{Name:"generic.attackDamage",Base:8}],IsBaby:1,ActiveEffects:[{Id:8,Amplifier:4,Duration:2147483647},{Id:14,Amplifier:0,Duration:2147483647}]}]}"
+	
+	#invis vex:
+	#/summon minecraft:vex ~ ~1 ~ {Attributes:[{Name:"generic.followRange",Base:500},{Name:"generic.movementSpeed",Base:0.2f},{Name:"generic.attackDamage",Base:0}],ActiveEffects:[{Id:14,Amplifier:0,Duration:2147483647}]}
+	
+	#zombie:
+	#/summon minecraft:vex ~ ~1 ~ {Passengers:[{id:"minecraft:zombie",FallFlying:1,ArmorItems:[{},{},{},{id:"minecraft:skull",Damage:3,tag:{display:{Name:"Eye of Cthulhu"}}}],Attributes:[{Name:"generic.followRange",Base:500},{Name:"generic.attackDamage",Base:8}],IsBaby:1,ActiveEffects:[{Id:8,Amplifier:4,Duration:2147483647},{Id:14,Amplifier:0,Duration:2147483647}]}]}
+	
+	#eye skull:
+	#{id:"minecraft:skull",Damage:3,tag:{display:{Name:"Eye of Cthulhu"}},Count:1b,tag:{SkullOwner:{Id:"681e626c-f0e3-4a48-a675-912d9bc95eda",Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTdkYjE5MjNkMDNjNGVmNGU5ZjZlODcyYzVhNmFkMjU3OGIxYWZmMmIyODFmYmMzZmZhNzQ2NmM4MjVmYjkifX19"}]}}}}
+	
+	
+	
+#============================================
+#				Group Defenitions
+#============================================
+
+	
+function spawn_caravan(loc: location):
+	set {_newloc} to {_loc}
+	spawn_caravan_guard({_newloc})
+	spawn_caravan_guard({_newloc})
+	wait 200 ticks
+	spawn_caravan_trader({_newloc})
+	spawn_caravan_trader({_newloc})
+	spawn_caravan_trader({_newloc})
+	spawn_caravan_trader({_newloc})
+	spawn_caravan_llama({_newloc})
+	spawn_caravan_llama({_newloc})
+	spawn_caravan_llama({_newloc})
+	spawn_caravan_llama({_newloc})
+	spawn_caravan_llama({_newloc})
+	spawn_caravan_llama({_newloc})
+	spawn_caravan_llama({_newloc})
+	spawn_caravan_llama({_newloc})
+	
+	
+#============================================
+#				Mob spawning
+#============================================
+	
+
+on spawn of a zombie pigman:
+	if {@demon} is true:
+		chance of 15%:
+			spawn_demon(event-location)
+	stop
+			
+on spawn of a zombie:
+	if {@demon} is true:
+		chance of 2%:
+			spawn_demon(event-location)
+	stop
+
+on spawn of a zombie:
+	if {@ogre} is true:
+		chance of 4%:
+			spawn_ogre(event-location)
+		biome at zombie is swamp
+		chance of 20%:
+			spawn_ogre(event-location)
+	stop
+			
+on spawn of a skeleton:
+	if {@wraith} is true:
+		chance of 3%:
+			spawn_wraith(event-location)
+		if {_loc}'s y-pos is less than 30:
+			chance of 15%:
+				spawn_wraith(event-location)
+	stop
+	
+	
+	
+	
+
+#elemental codes:
+#0 = magic
+#1 = water
+#2 = magma
+#3 = life
+#4 = frost
+#5 = desert	
+
+on spawn of a zombie:
+	if {@elementals} is true:
+		chance of 5%:
+			#====================
+			#water
+			if biome at zombie is river:
+				spawn_elemental(event-location, 1)
+			else if biome at zombie is beach:
+				spawn_elemental(event-location, 1)
+				#====================
+				#magma
+			else if biome at zombie is nether:
+				spawn_elemental(event-location, 2)
+				#====================
+				#life
+			else if biome at zombie is plains:
+				spawn_elemental(event-location, 3)
+			else if biome at zombie is forest:
+				spawn_elemental(event-location, 3)
+			else if biome at zombie is roofed forest:
+				spawn_elemental(event-location, 3)
+			else if biome at zombie is jungle:
+				spawn_elemental(event-location, 3)
+			else if biome at zombie is swamp:
+				spawn_elemental(event-location, 3)
+				#====================
+				#frost
+			else if biome at zombie is ice plains:
+				spawn_elemental(event-location, 4)
+			else if biome at zombie is ice plains spikes:
+				spawn_elemental(event-location, 4)
+			else if biome at zombie is taiga:
+				spawn_elemental(event-location, 4)
+			else if biome at zombie is cold taiga:
+				spawn_elemental(event-location, 4)
+			else if biome at zombie is extreme hills:
+				spawn_elemental(event-location, 4)
+				#====================
+				#sand
+			else if biome at zombie is desert:
+				spawn_elemental(event-location, 4)
+			else if biome at zombie is mesa:
+				spawn_elemental(event-location, 4)
+			else:
+				spawn_elemental(event-location, 0)
+				
+	stop
+	
+#extra water elemental spawning
+on spawn of a squid:
+	if {@elementals} is true:
+		chance of 3%:
+			spawn_elemental(event-location, 1)
+	
+	
+on spawn of a rabbit:
+	if {@caravans}:
+		chance of 5%:
+			spawn_caravan(event-location)
+	
+		
+#============================================
+#				Commands
+#============================================
+
+#Wraith
+on command "mob wraith":
+	if player has permission "mob.admin":
+		spawn_wraith(sender's location)
+		cancel event
+		send "{@logo} {@summonmsg} Wraith" to player
+
+
+#Demon
+on command "mob demon":
+	if player has permission "mob.admin":
+		spawn_demon(sender's location)
+		cancel event
+		send "{@logo} {@summonmsg} Demon" to player
+
+		
+#Ogre
+on command "mob ogre":
+	if player has permission "mob.admin":
+		spawn_ogre(sender's location)
+		cancel event
+		send "{@logo} {@summonmsg} Ogre" to player
+	
+#Ogre
+on command "mob eyeball":
+	if player has permission "mob.admin":
+		spawn_eyeball(sender's location)
+		#send "SPAWNING FAILED" to player
+		#cancel event
+		send "{@logo} {@summonmsg} Eyeball" to player
+	
+#============================================
+#				GUI
+#============================================
+command /emob:
+	permission: mob.menu
+	trigger:
+		wait 3 ticks
+		open chest with 3 row named "Elemental Monsters Spawning Menu" to player
+		wait 3 ticks
+		
+		format slot 0 of player with gunpowder named "&8&lWraith" with lore "&7Spawn Wraith" to run [make player execute command "/mob wraith"]
+		format slot 1 of player with fire charge named "&c&lDemon" with lore "&7Spawn Demon" to run [make player execute command "/mob demon"]
+		format slot 2 of player with slimeball named "&2Ogre" with lore "&7Spawn Ogre" to run [make player execute command "/mob ogre"]
+		format slot 3 of player with eye of ender named "&2Flying Eyeball" with lore "&7Spawn Eye of Cthulhu" to run [make player execute command "/mob eyeball"]
+		
+		format slot 9 of player with eye of ender named "Magic Elemental" to run [spawn_elemental(sender's location, 0)]
+		format slot 10 of player with lapis lazuli named "Water Elemental" to run [spawn_elemental(sender's location, 1)]
+		format slot 11 of player with magma cream named "Magma Elemental" to run [spawn_elemental(sender's location, 2)]
+		format slot 12 of player with sapling named "Life Elemental" to run [spawn_elemental(sender's location, 3)]
+		format slot 13 of player with ice named "Frost Elemental" to run [spawn_elemental(sender's location, 4)]
+		format slot 14 of player with sand named "Sand Elemental" to run [spawn_elemental(sender's location, 5)]
+		
+		format slot 18 of player with emerald named "Spawn Caravan" to run [spawn_caravan(sender's location)]
+		
+		
+		
+		
+		
