@@ -1,5 +1,7 @@
 package com.ivanit.emobs;
 
+import com.ivanit.emobs.CustomMob;
+
 import java.util.HashMap;
 import java.util.Set;
 
@@ -16,22 +18,31 @@ import org.bukkit.inventory.ItemStack;
 
 public class Emob_mobs
 {
-	public HashMap<String, Custom_mob> mob_configs = new HashMap<>();
+	public static FileConfiguration cfg;
+	
+	public HashMap<String, CustomMob> mob_configs = new HashMap<>();
 	public HashMap<String, ItemStack> item_configs = new HashMap<>();
 		
 	
-	public void loadCfg(FileConfiguration cfg)
+	public void loadCfg()
 	{
-		Set<String> moblist = cfg.getConfigurationSection("mobs").getKeys(false);
-		for ( String mob : moblist )
+		//	parse all the custom items	
+		Set<String> itemList = cfg.getConfigurationSection("items").getKeys(false);
+		for ( String item_str : itemList )
 		{
-			mob_configs.put(mob, Custom_mob_ctor(cfg, mob));
+			ItemStack temp_item = cfg.getItemStack("items." + item_str);
+			item_configs.put(item_str, temp_item);
 		}
-	}
-
-
-	private Custom_mob Custom_mob_ctor(FileConfiguration cfg, String mob) {
-		return Custom_mob(cfg, mob);
+			
+		//	go over the mob list
+		CustomMob.item_configs = item_configs;
+		Set<String> moblist = cfg.getConfigurationSection("mobs").getKeys(false);
+		for ( String mob_str : moblist )
+		{
+			//	call custom mob constructor to parse the data		
+			CustomMob mymob = new CustomMob(mob_str);
+			mob_configs.put(mob_str, mymob);
+		}
 	}
 
 
@@ -43,7 +54,7 @@ public class Emob_mobs
     	mypig.addPassenger(loc.getWorld().spawnEntity(loc, EntityType.PIG));
     	mypig.setCustomName("TEST PIG");
     	mypig.setGliding(true);
-    	mypig.getEquipment().setChestplate(null);
+    	mypig.getEquipment().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
     	mypig.getEquipment().setChestplateDropChance((float) 1.0);
     }
 }

@@ -39,7 +39,9 @@ public class Emobs extends JavaPlugin
     public void onEnable()
     {
         createCustomConfig();
-        myspawner.loadCfg(getCfg());
+        
+        myspawner.cfg = getCfg();
+        myspawner.loadCfg();
     }
 
     public FileConfiguration getCfg()
