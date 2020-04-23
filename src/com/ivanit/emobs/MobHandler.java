@@ -5,6 +5,7 @@ import com.ivanit.emobs.CustomMob;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 //import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 //import org.bukkit.configuration.file.FileConfiguration;
 //import org.bukkit.configuration.file.FileConfiguration;
 
-public class Emob_mobs
+public class MobHandler
 {
 	public static FileConfiguration cfg;
 	
@@ -26,6 +27,7 @@ public class Emob_mobs
 	
 	public void loadCfg()
 	{
+		Bukkit.getLogger().info("loading configuration...");
 		//	parse all the custom items	
 		Set<String> itemList = cfg.getConfigurationSection("items").getKeys(false);
 		for ( String item_str : itemList )

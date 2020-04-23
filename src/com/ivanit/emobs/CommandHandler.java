@@ -1,6 +1,6 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.Emob_mobs;
+import com.ivanit.emobs.MobHandler;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class Emob_manual implements CommandExecutor
+public class CommandHandler implements CommandExecutor
 {
-	Emob_mobs myspawner = new Emob_mobs();
+	MobHandler myspawner = new MobHandler();
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	
 	@Override

@@ -1,7 +1,8 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.Emob_manual;
-import com.ivanit.emobs.Emob_mobs;
+import com.ivanit.emobs.CommandHandler;
+import com.ivanit.emobs.MobHandler;
+import com.ivanit.emobs.SpawnRegister;
 
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
@@ -26,7 +27,7 @@ public class Emobs extends JavaPlugin
 {	
 	//	vars
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-    Emob_mobs myspawner = new Emob_mobs();
+    MobHandler mymobs = new MobHandler();
     
     FileConfiguration cfg = getConfig();
 	//    String cfgFileName = "emobs.yml";
@@ -37,54 +38,19 @@ public class Emobs extends JavaPlugin
     @Override
     public void onEnable()
     {
+    	Bukkit.getLogger().info("enabling Elemental Mobs");
     	cfg.addDefault("testConfigVal", true);
         cfg.options().copyDefaults(true);
         saveConfig();
         
-//        myspawner.cfg = cfg;
-//        myspawner.loadCfg();
+//        mymobs.cfg = cfg;
+//        mymobs.loadCfg();
         
-        this.getCommand("mypig").setExecutor(new Emob_manual());
+        this.getCommand("mypig").setExecutor(new CommandHandler());
+        
+//        SpawnRegister mySpReg = new SpawnRegister();
+//        mySpReg.mymobs = mymobs;
+        
+//        this.getServer().getPluginManager().registerEvents(mySpReg, this);
     }
-    
-    
-    //    on creature spawn
-    @EventHandler
-    public void onSpawn(CreatureSpawnEvent e)
-    {
-    	Bukkit.dispatchCommand(console, "say HOSTILE MOB SPAWNED");	
-    	
-    	if (e.getSpawnReason() == SpawnReason.NATURAL)
-	    {
-    		myspawner.spawn_testPig(e.getLocation());    		
-	    }
-    	
-    	
-	    if (isHostileMobSpawn(e))
-	    {	    	
-	    	Bukkit.dispatchCommand(console, "say HOSTILE MOB SPAWNED");	
-	    	// Obtain a number between [0 - 49].
-    		//int n = rand.nextInt(50);
-	    }
-    }
-    
-    
-    
-    //    helper function
-	public boolean isHostileMobSpawn(CreatureSpawnEvent e)
-	{
-		if (e.getSpawnReason() == SpawnReason.NATURAL)
-	    {
-	    	if (
-    			(e.getEntityType() == EntityType.ZOMBIE) 
-	    		|| (e.getEntityType() == EntityType.SKELETON)
-	    		|| (e.getEntityType() == EntityType.CREEPER)
-	    		|| (e.getEntityType() == EntityType.SPIDER)
-	    	) {
-	    		return true;
-	    	}
-	    }
-
-		return false;
-	}
 }
