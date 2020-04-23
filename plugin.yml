@@ -2,3 +2,6 @@ name: emobs
 main: com.ivanit.emobs.Emobs
 version: 1.0
 commands:
+   emobs:
+      description: test - should give a diamond, maybe spawn a pig
+      usage: /<command>
