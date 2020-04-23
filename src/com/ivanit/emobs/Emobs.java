@@ -8,10 +8,16 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+
+import java.io.File;
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 //import org.bukkit.ChunkSnapshot;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 
@@ -19,31 +25,50 @@ import org.bukkit.entity.*;
 //import java.util.Random;
 
 public class Emobs extends JavaPlugin 
-{
-	FileConfiguration config = this.getConfig();
-
-		
-	//	Fired when plugin is enabled
-	@Override
-    public void onEnable() 
-	{
-		Bukkit.dispatchCommand(console, "say Elemental Mobs plugin enabled");
-		this.getCommand("emobs").setExecutor(new Emob_manual());
-    }
-    // Fired when plugin is disabled
-    @Override
-    public void onDisable() 
-    {
-
-    }
-    
-    
-    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-    
+{	
+	//	vars
+	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
     Emob_mobs myspawner = new Emob_mobs();
-   
+    
+    String cfgFileName = "emobs.yml";
+	private File customConfigFile;
+    FileConfiguration cfg;
+	
+	//	load config
+    @Override
+    public void onEnable()
+    {
+        createCustomConfig();
+        myspawner.loadCfg(getCfg());
+    }
+
+    public FileConfiguration getCfg()
+    {
+        return this.cfg;
+    }
+
+    private void createCustomConfig()
+    {
+        customConfigFile = new File(getDataFolder(), cfgFileName);
+        if (!customConfigFile.exists()) {
+            customConfigFile.getParentFile().mkdirs();
+            saveResource(cfgFileName, false);
+         }
+
+        cfg = new YamlConfiguration();
+        try
+        {
+            cfg.load(customConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
     
     
+    
+        
+    
+    //    on creature spawn
     @EventHandler
     public void onSpawn(CreatureSpawnEvent e)
     {
@@ -65,7 +90,7 @@ public class Emobs extends JavaPlugin
     
     
     
-    //    helper functions
+    //    helper function
 	public boolean isHostileMobSpawn(CreatureSpawnEvent e)
 	{
 		if (e.getSpawnReason() == SpawnReason.NATURAL)
