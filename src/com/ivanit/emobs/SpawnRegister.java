@@ -10,8 +10,18 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 public class SpawnRegister implements Listener
 {
-	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	MobHandler mymobs = new MobHandler();
+	MobHandler mymobs;
+	
+	void log(String L)
+	{
+		Bukkit.getLogger().info("[emobs][SpawnRegister] " + L);
+	}
+	
+	
+	public SpawnRegister(MobHandler in_mobs)
+	{
+		mymobs = in_mobs;
+	}
 	
 	
 	//  on creature spawn
@@ -20,14 +30,12 @@ public class SpawnRegister implements Listener
 	{
 		if (e.getSpawnReason() == SpawnReason.NATURAL)
 	    {
-			Bukkit.dispatchCommand(console, "say NATURAL MOB SPAWNED");
 			mymobs.spawn_testPig(e.getLocation());    		
 	    }
 	
 	
 	    if (isHostileMobSpawn(e))
 	    {	    	
-	    	Bukkit.dispatchCommand(console, "say HOSTILE MOB SPAWNED");	
 	    	// Obtain a number between [0 - 49].
 	    	//int n = rand.nextInt(50);
 	    }

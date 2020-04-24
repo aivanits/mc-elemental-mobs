@@ -2,6 +2,7 @@ package com.ivanit.emobs;
 
 import com.ivanit.emobs.CustomMob;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -23,28 +24,66 @@ public class MobHandler
 	
 	public HashMap<String, CustomMob> mob_configs = new HashMap<>();
 	public HashMap<String, ItemStack> item_configs = new HashMap<>();
-		
 	
+	public Set<String> itemList = Collections.emptySet();
+	public Set<String> mobList = Collections.emptySet();
+	
+	void log(String L)
+	{
+		Bukkit.getLogger().info("[emobs][MobHandler] " + L);
+	}	
+	
+	public MobHandler(FileConfiguration in_cfg)
+	{
+		cfg = in_cfg;
+	}
+		
 	public void loadCfg()
 	{
-		Bukkit.getLogger().info("loading configuration...");
+		log("[emobs] loading custom items...");
 		//	parse all the custom items	
-		Set<String> itemList = cfg.getConfigurationSection("items").getKeys(false);
-		for ( String item_str : itemList )
+		//	getKeys(deep = false) means we only get the top level keys under "items"	
+		
+		if (cfg.isConfigurationSection("items"))
 		{
-			ItemStack temp_item = cfg.getItemStack("items." + item_str);
-			item_configs.put(item_str, temp_item);
+			itemList = cfg.getConfigurationSection("items").getKeys(false);
+			for ( String item_str : itemList )
+			{
+				if (cfg.isConfigurationSection("items." + item_str))
+				{
+					ItemStack temp_item = cfg.getItemStack("items." + item_str);
+					item_configs.put(item_str, temp_item);
+				}
+			}
 		}
-			
+		
+		log("passing item config...");	
+		CustomMob.setConfigs(cfg, item_configs);
+
+		log("loading custom mobs config...");	
 		//	go over the mob list
-		CustomMob.item_configs = item_configs;
-		Set<String> moblist = cfg.getConfigurationSection("mobs").getKeys(false);
-		for ( String mob_str : moblist )
+		
+		
+		
+		if (cfg.isConfigurationSection("mobs"))
 		{
-			//	call custom mob constructor to parse the data		
-			CustomMob mymob = new CustomMob(mob_str);
-			mob_configs.put(mob_str, mymob);
+			mobList = cfg.getConfigurationSection("mobs").getKeys(false);
+			
+			log("parsing custom mob data...");
+			for ( String mob_str : mobList )
+			{
+				if (cfg.isConfigurationSection("mobs." + mob_str))
+				{
+					log( String.format("	loading mob:  %s", mob_str));
+					//	call custom mob constructor to parse the data
+					CustomMob mymob = new CustomMob(mob_str);
+					mob_configs.put(mob_str, mymob);
+				}
+			}
 		}
+		
+		// done!
+		log(String.format("loaded %d custom mobs and %d custom items", mobList.size(), itemList.size() ) );
 	}
 
 

@@ -14,8 +14,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class CommandHandler implements CommandExecutor
 {
-	MobHandler myspawner = new MobHandler();
-	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	static ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+	MobHandler myspawner;
+	
+	void Logger(String L)
+	{
+		Bukkit.getLogger().info("[emobs][CommandHandler] " + L);
+	}
+	
+	public CommandHandler(MobHandler in_mobs)
+	{
+		myspawner = in_mobs;
+	}
 	
 	@Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
