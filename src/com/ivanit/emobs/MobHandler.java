@@ -1,6 +1,7 @@
 package com.ivanit.emobs;
 
 import com.ivanit.emobs.CustomMob;
+import com.ivanit.emobs.CustomHead;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class MobHandler
 	void log(String L)
 	{
 		Bukkit.getLogger().info("[emobs][MobHandler] " + L);
-	}	
+	}
 	
 	public MobHandler(FileConfiguration in_cfg)
 	{
@@ -40,7 +41,7 @@ public class MobHandler
 		
 	public void loadCfg()
 	{
-		log("[emobs] loading custom items...");
+		log("loading custom items...");
 		//	parse all the custom items	
 		//	getKeys(deep = false) means we only get the top level keys under "items"	
 		
@@ -56,6 +57,26 @@ public class MobHandler
 				}
 			}
 		}
+		
+		
+		log("loading custom heads...");
+		if (cfg.isConfigurationSection("heads"))
+		{
+			itemList = cfg.getConfigurationSection("heads").getKeys(false);
+			for ( String item_str : itemList )
+			{
+				if (cfg.isConfigurationSection("heads." + item_str))
+				{
+					// 
+					ItemStack head_item = CustomHead.getHead(
+							cfg.getItemStack("items." + item_str + ".itemData"),
+							cfg.getString("items." + item_str + ".texture"));
+
+					item_configs.put(item_str, head_item);
+				}
+			}
+		}
+		
 		
 		log("passing item config...");	
 		CustomMob.setConfigs(cfg, item_configs);

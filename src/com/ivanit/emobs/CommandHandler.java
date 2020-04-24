@@ -41,6 +41,7 @@ public class CommandHandler implements CommandExecutor
 	        diamond.setItemMeta(itemMeta);
 	        player.getInventory().addItem(diamond);
 	        
+	        
 	        myspawner.spawn_testPig(player.getLocation());
 	        
 	        Bukkit.dispatchCommand(console, "say TEST COMMAND RUN");

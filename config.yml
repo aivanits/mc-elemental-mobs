@@ -1,1 +1,29 @@
 testVal: true
+items:
+   wraith_chest:
+      ==: org.bukkit.inventory.ItemStack
+      type: LEATHER_CHESTPLATE
+      meta:
+         ==: ItemMeta
+         meta-type: UNSPECIFIC
+         display-name: Wraith Rags
+         lore:
+            - The tattered rags of a wraith
+   wraith_scythe:
+      ==: org.bukkit.inventory.ItemStack
+      type: WOODEN_HOE
+      meta:
+         ==: ItemMeta
+         meta-type: UNSPECIFIC
+         display-name: Wraith Scythe
+         lore:
+            - not very sharp
+   wraith_helm:
+      ==: org.bukkit.inventory.ItemStack
+      type: WOODEN_HOE
+      meta:
+         ==: ItemMeta
+         meta-type: UNSPECIFIC
+         display-name: Wraith Scythe
+         lore:
+            - not very sharp

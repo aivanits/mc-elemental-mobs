@@ -30,16 +30,16 @@ public class SpawnRegister implements Listener
 	{
 		if (e.getSpawnReason() == SpawnReason.NATURAL)
 	    {
-			mymobs.spawn_testPig(e.getLocation());    		
+		    if (isHostileMobSpawn(e))
+		    {
+		    	// TODO: check biomes
+		    	
+		    	//mymobs.spawn_testPig(e.getLocation());				
+		    	// Obtain a number between [0 - 49].
+		    	//int n = rand.nextInt(50);
+		    }
 	    }
-	
-	
-	    if (isHostileMobSpawn(e))
-	    {	    	
-	    	// Obtain a number between [0 - 49].
-	    	//int n = rand.nextInt(50);
-	    }
-	}
+    }
 	  
 	  
 	  
