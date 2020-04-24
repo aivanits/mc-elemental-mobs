@@ -1,6 +1,6 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.MobHandler;
+import com.ivanit.emobs.ConfigParser;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,14 +15,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class CommandHandler implements CommandExecutor
 {
 	static ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-	MobHandler myspawner;
+	ConfigParser myspawner;
 	
 	void Logger(String L)
 	{
 		Bukkit.getLogger().info("[emobs][CommandHandler] " + L);
 	}
 	
-	public CommandHandler(MobHandler in_mobs)
+	public CommandHandler(ConfigParser in_mobs)
 	{
 		myspawner = in_mobs;
 	}

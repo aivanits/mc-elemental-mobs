@@ -10,7 +10,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 public class SpawnRegister implements Listener
 {
-	MobHandler mymobs;
+	ConfigParser mymobs;
 	
 	void log(String L)
 	{
@@ -18,7 +18,7 @@ public class SpawnRegister implements Listener
 	}
 	
 	
-	public SpawnRegister(MobHandler in_mobs)
+	public SpawnRegister(ConfigParser in_mobs)
 	{
 		mymobs = in_mobs;
 	}

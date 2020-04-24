@@ -27,3 +27,28 @@ items:
          display-name: Wraith Scythe
          lore:
             - not very sharp
+heads:
+   wraith_skull:
+      itemData:
+         ==: org.bukkit.inventory.ItemStack
+         type: PLAYER_HEAD
+         meta:
+            ==: ItemMeta
+            meta-type: UNSPECIFIC
+            display-name: Wraith Hood
+            lore:
+               - spooky
+      texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmRhYTZhOTgzNDIxNzliNDU2ZjU2YTQ0NTM0OWM3ZWVlNmYxYTdhNTkyN2E0OTBjNDQyOTNiMGFhNzc4YmUyIn19fQ==
+
+mobs:
+   wraith:
+      base: WITHER_SKELETON
+      chance: 0.01
+      name: Wraith
+      item: wraith_scythe
+      helm: wraith_skull
+      chest: wraith_chest
+      potions:
+         - INVISIBILITY 1 
+         - SLOWNESS 1
+       

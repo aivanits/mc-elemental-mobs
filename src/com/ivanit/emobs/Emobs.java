@@ -1,7 +1,7 @@
 package com.ivanit.emobs;
 
 import com.ivanit.emobs.CommandHandler;
-import com.ivanit.emobs.MobHandler;
+import com.ivanit.emobs.ConfigParser;
 import com.ivanit.emobs.SpawnRegister;
 
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -29,7 +29,7 @@ public class Emobs extends JavaPlugin
 	//	vars
 	//	TODO: implement a proper logger
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-    MobHandler mymobs;
+    ConfigParser mymobs;
     
     void log(String L)
 	{
@@ -66,7 +66,7 @@ public class Emobs extends JavaPlugin
         Bukkit.getLogger().info("loading config file...");
         
         // loads all the custom mobs
-        mymobs = new MobHandler(cfg);
+        mymobs = new ConfigParser(cfg);
         mymobs.loadCfg();
         
         // start the command listener
