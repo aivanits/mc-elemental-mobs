@@ -37,9 +37,6 @@ public class Emobs extends JavaPlugin
 	}
     
     FileConfiguration cfg;
-	//    String cfgFileName = "emobs.yml";
-	//	private File customConfigFile;
-	//    FileConfiguration cfg;
 	
 	//	load config
     @Override
