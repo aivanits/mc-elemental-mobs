@@ -6,6 +6,7 @@ import com.ivanit.emobs.ItemEquip;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -29,9 +30,9 @@ public class ConfigParser
 	public HashMap<String, CustomMob> mob_configs = new HashMap<>();
 	public HashMap<String, ItemEquip> item_configs = new HashMap<>();
 	
-	public Set<String> itemList = Collections.emptySet();
-	public Set<String> mobList = Collections.emptySet();
-	public Set<String> headList = Collections.emptySet();
+	public Set<String> itemList = new HashSet<>();
+	public Set<String> mobList = new HashSet<>();
+	public Set<String> headList = new HashSet<>();
 	
 	
 	void log(String L)
@@ -57,6 +58,8 @@ public class ConfigParser
 			{
 				if (cfg.isConfigurationSection("items." + item_str))
 				{
+					// TODO: remove this logging line
+					log("		" + item_str);
 					ItemEquip temp_item = new ItemEquip(
 							cfg.getItemStack("items." + item_str),
 							(float) cfg.getDouble("items." + item_str, 0.1)
@@ -76,12 +79,14 @@ public class ConfigParser
 			{
 				if (cfg.isConfigurationSection("heads." + head_str))
 				{
-					// 
+					// TODO: remove this logging line
+					log("		" + head_str);
 					ItemEquip head_item = new ItemEquip(
 							CustomHead.getHead(
-								cfg.getItemStack("heads." + head_str + ".itemData"),
-								cfg.getString("heads." + head_str + ".texture")),
-							(float) cfg.getDouble("heads." + head_str + ".dropChance", 0.2)
+								cfg.getItemStack("heads." + head_str + ".itemData",
+										new ItemStack(Material.PLAYER_HEAD)),
+								cfg.getString("heads." + head_str + ".texture", "")),
+							(float) cfg.getDouble("heads." + head_str + ".dropChance", 0.4)
 					);
 				
 					item_configs.put(head_str, head_item);
@@ -104,7 +109,8 @@ public class ConfigParser
 			{
 				if (cfg.isConfigurationSection("mobs." + mob_str))
 				{
-					log( String.format("	loading mob:  %s", mob_str));
+					// TODO: remove this logging line
+					log("		" + mob_str);
 					//	call custom mob constructor to parse the data
 					CustomMob mymob = new CustomMob(mob_str);
 					mob_configs.put(mob_str, mymob);

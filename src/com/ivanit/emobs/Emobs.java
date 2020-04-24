@@ -1,6 +1,6 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.CommandHandler;
+import com.ivanit.emobs.CommandSpawn;
 import com.ivanit.emobs.ConfigParser;
 import com.ivanit.emobs.SpawnRegister;
 
@@ -27,10 +27,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class Emobs extends JavaPlugin 
 {	
 	//	vars
-	//	TODO: implement a proper logger
-	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
     ConfigParser mymobs;
     
+    //	TODO: implement a proper logger
+    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
     void log(String L)
 	{
 		Bukkit.getLogger().info("[emobs] " + L);
@@ -57,7 +57,7 @@ public class Emobs extends JavaPlugin
         
         // start the command listener
         log("starting command listener...");
-        this.getCommand("mypig").setExecutor(new CommandHandler(mymobs));
+        this.getCommand("mypig").setExecutor(new CommandSpawn(mymobs));
         
         // create and start the mob spawn listener
         log("starting mob spawn listener...");

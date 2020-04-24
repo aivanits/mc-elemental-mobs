@@ -4,6 +4,7 @@ import com.ivanit.emobs.ItemEquip;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 //import java.util.Base64;
@@ -53,7 +54,7 @@ public class CustomMob
 	ItemEquip boot = new ItemEquip();
 	
 	// potion effects
-	Set<PotionEffect> effects = Collections.emptySet();
+	Set<PotionEffect> effects = new HashSet<>();
 	
 	// TODO: other data (health, speed, etc?)
 	
@@ -150,7 +151,10 @@ public class CustomMob
 				int effect_strength = cfg.getInt("mobs." + mob_ID + ".potions." + effect_string, 1);
 				PotionEffectType efct_type = PotionEffectType.getByName(effect_string);
 				
-				effects.add( new PotionEffect(efct_type, Integer.MAX_VALUE, effect_strength));
+				if (efct_type != null)
+				{
+					effects.add( new PotionEffect(efct_type, Integer.MAX_VALUE, effect_strength));					
+				}
 			}
 		}
 	}
