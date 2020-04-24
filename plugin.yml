@@ -3,6 +3,9 @@ main: com.ivanit.emobs.Emobs
 version: 1.0
 api-version: 1.15
 commands:
-   mypig:
-      description: test - should give a diamond, maybe spawn a pig
-      usage: /<command>
+   eMob:
+      description: spawn an elemental mob
+      usage: /<command> <mobName>
+   eItem:
+      description: spawn an elemental item
+      usage: /<command> <itemName>

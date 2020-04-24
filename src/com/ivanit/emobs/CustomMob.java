@@ -1,12 +1,10 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.ItemEquip;
+//import com.ivanit.emobs.ItemEquip;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 //import java.util.Base64;
 import java.util.Random;
 
@@ -17,8 +15,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+//import org.bukkit.inventory.ItemStack;
+//import org.bukkit.inventory.meta.ItemMeta;
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;

@@ -1,14 +1,14 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.CommandSpawn;
-import com.ivanit.emobs.ConfigParser;
-import com.ivanit.emobs.SpawnRegister;
+//import com.ivanit.emobs.CommandSpawn;
+//import com.ivanit.emobs.ConfigParser;
+//import com.ivanit.emobs.SpawnRegister;
 
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+//import org.bukkit.event.entity.CreatureSpawnEvent;
+//import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
+//import org.bukkit.entity.EntityType;
+//import org.bukkit.event.EventHandler;
 //import org.bukkit.plugin.Plugin;
 
 import org.bukkit.Bukkit;
@@ -27,7 +27,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class Emobs extends JavaPlugin 
 {	
 	//	vars
-    ConfigParser mymobs;
+    ConfigParser cfgParsed;
     
     //	TODO: implement a proper logger
     ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
@@ -52,16 +52,17 @@ public class Emobs extends JavaPlugin
         
         // loads all the custom mobs
         log("parsing config file...");
-        mymobs = new ConfigParser(cfg);
-        mymobs.loadCfg();
+        cfgParsed = new ConfigParser(cfg);
+        cfgParsed.loadCfg();
         
         // start the command listener
-        log("starting command listener...");
-        this.getCommand("mypig").setExecutor(new CommandSpawn(mymobs));
+        log("starting command listeners...");
+        this.getCommand("eMob").setExecutor(new CommandSpawn(cfgParsed));
+        this.getCommand("eItem").setExecutor(new CommandGiveItem(cfgParsed));
         
         // create and start the mob spawn listener
         log("starting mob spawn listener...");
-        SpawnRegister mySpReg = new SpawnRegister(mymobs);
+        SpawnRegister mySpReg = new SpawnRegister(cfgParsed);
         this.getServer().getPluginManager().registerEvents(mySpReg, this);
         
         log("Finished Loading!");

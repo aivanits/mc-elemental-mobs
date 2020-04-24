@@ -1,7 +1,7 @@
 package com.ivanit.emobs;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
+//import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

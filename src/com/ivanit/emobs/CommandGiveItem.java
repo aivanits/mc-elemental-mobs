@@ -1,16 +1,17 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.ConfigParser;
+//import com.ivanit.emobs.ItemEquip;
+//import com.ivanit.emobs.ConfigParser;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+//import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+//import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+//import org.bukkit.inventory.ItemStack;
+//import org.bukkit.inventory.meta.ItemMeta;
 
 public class CommandGiveItem implements CommandExecutor
 {
@@ -39,12 +40,20 @@ public class CommandGiveItem implements CommandExecutor
             }
             
             String itemName = args[0];
-            if (config.itemList.contains(itemName))
+            if (config.item_configs.containsKey(itemName))
             {
-            	ItemStack item = config.item_configs.get(itemName).item;
-            	player.getInventory().addItem(item);
-            	player.sendMessage("[emobs] gave item: " + itemName);
-    	        return true;
+            	ItemEquip Eitem = config.item_configs.get(itemName);
+            	if (Eitem.valid)
+            	{
+	            	player.getInventory().addItem(Eitem.item);
+	            	player.sendMessage("[emobs] gave item: " + itemName);
+	    	        return true;
+            	}
+            	else
+            	{
+            		player.sendMessage("error: item name present in config, not parsed properly");
+                	return false;
+            	}
             }
             else
             {

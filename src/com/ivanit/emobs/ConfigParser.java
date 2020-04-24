@@ -1,10 +1,9 @@
 package com.ivanit.emobs;
 
-import com.ivanit.emobs.CustomMob;
-import com.ivanit.emobs.CustomHead;
-import com.ivanit.emobs.ItemEquip;
+//import com.ivanit.emobs.CustomMob;
+//import com.ivanit.emobs.CustomHead;
+//import com.ivanit.emobs.ItemEquip;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -70,6 +69,7 @@ public class ConfigParser
 			}
 		}
 		
+		// TODO: remove all invalid items?
 		
 		if (cfg.isConfigurationSection("heads"))
 		{
