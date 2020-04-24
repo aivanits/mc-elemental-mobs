@@ -59,7 +59,7 @@ public class ConfigParser
 				{
 					ItemEquip temp_item = new ItemEquip(
 							cfg.getItemStack("items." + item_str),
-							cfg.getDouble("items." + item_str, 0.1)
+							(float) cfg.getDouble("items." + item_str, 0.1)
 						);
 					
 					item_configs.put(item_str, temp_item);
@@ -81,7 +81,7 @@ public class ConfigParser
 							CustomHead.getHead(
 								cfg.getItemStack("heads." + head_str + ".itemData"),
 								cfg.getString("heads." + head_str + ".texture")),
-							cfg.getDouble("heads." + head_str + ".dropChance", 0.2)
+							(float) cfg.getDouble("heads." + head_str + ".dropChance", 0.2)
 					);
 				
 					item_configs.put(head_str, head_item);
@@ -93,10 +93,8 @@ public class ConfigParser
 		log("passing item config...");	
 		CustomMob.setConfigs(cfg, item_configs);
 
-		log("loading custom mobs config...");	
 		//	go over the mob list
-		
-		
+		log("loading custom mobs config...");	
 		
 		if (cfg.isConfigurationSection("mobs"))
 		{

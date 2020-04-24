@@ -81,7 +81,7 @@ public class CustomMob
 		}
 		else
 		{
-			return new ItemEquip(Material.getMaterial(item_name), 0.2);
+			return new ItemEquip(Material.getMaterial(item_name), 0.2F);
 		}
 	}
 	
@@ -145,7 +145,8 @@ public class CustomMob
 			{
 				int effect_strength = cfg.getInt("mobs." + mob_ID + ".potions." + effect_string, 1);
 				PotionEffectType efct_type = PotionEffectType.getByName(effect_string);
-				PotionEffect efct = new PotionEffect(efct_type, Integer.MAX_VALUE, effect_strength);
+				
+				effects.add( new PotionEffect(efct_type, Integer.MAX_VALUE, effect_strength));
 			}
 		}
 	}
@@ -154,41 +155,56 @@ public class CustomMob
 	public void spawn(Location loc)
 	{
 		if (rand.nextFloat() < chance)
-		{
+    	{
+    		
 			LivingEntity mypig = (LivingEntity) loc.getWorld().spawnEntity(loc, base);
 						
+			
+			for (PotionEffect efct : effects)
+			{
+				mypig.addPotionEffect(efct);
+			}
+			
+			
 			// equipment
 			EntityEquipment equip = mypig.getEquipment();
 			
-//			if (heldItem != null)
-//			{
-//				equip.setItemInHand(arg0);
-//			}
-//			
-//			if (attrs.contains("itemOfh"))
-//			{
-//				heldItem_ofh = tryItem("itemOfh");
-//			}
-//			
-//			if (attrs.contains("helm"))
-//			{
-//				helm = tryItem("helm");
-//			}
-//			
-//			if (attrs.contains("chest"))
-//			{
-//				chest = tryItem("chest");
-//			}
-//			
-//			if (attrs.contains("leg"))
-//			{
-//				leg = tryItem("leg");
-//			}
-//			
-//			if (attrs.contains("boot"))
-//			{
-//				boot = tryItem("boot");
-//			}
-		}
+			if (heldItem.valid)
+			{
+				equip.setItemInMainHand(heldItem.item);
+				equip.setItemInMainHandDropChance(heldItem.dropChance);
+			}
+			
+			if (heldItem_ofh.valid)
+			{
+				equip.setItemInOffHand(heldItem_ofh.item);
+				equip.setItemInOffHandDropChance(heldItem_ofh.dropChance);
+			}
+	
+	
+			if (helm.valid)
+			{
+				equip.setHelmet(helm.item);
+				equip.setHelmetDropChance(helm.dropChance);
+			}
+			
+			if (chest.valid)
+			{
+				equip.setChestplate(chest.item);
+				equip.setChestplateDropChance(chest.dropChance);
+			}
+			
+			if (leg.valid)
+			{
+				equip.setLeggings(leg.item);
+				equip.setLeggingsDropChance(leg.dropChance);
+			}
+			
+			if (boot.valid)
+			{
+				equip.setBoots(boot.item);
+				equip.setBootsDropChance(boot.dropChance);
+			}
+    	}
 	}
 }

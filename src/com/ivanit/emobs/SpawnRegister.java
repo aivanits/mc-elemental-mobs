@@ -32,11 +32,12 @@ public class SpawnRegister implements Listener
 	    {
 		    if (isHostileMobSpawn(e))
 		    {
-		    	// TODO: check biomes
-		    	
-		    	//mymobs.spawn_testPig(e.getLocation());				
-		    	// Obtain a number between [0 - 49].
-		    	//int n = rand.nextInt(50);
+		    	for (String mob : mymobs.mobList)
+		    	{
+		    		// try to spawn each valid mob
+		    		// the called function will handle spawn chance
+		    		mymobs.mob_configs.get(mob).spawn(e.getLocation());
+		    	}
 		    }
 	    }
     }

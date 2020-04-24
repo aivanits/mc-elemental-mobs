@@ -39,7 +39,7 @@ heads:
             lore:
                - spooky
       texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmRhYTZhOTgzNDIxNzliNDU2ZjU2YTQ0NTM0OWM3ZWVlNmYxYTdhNTkyN2E0OTBjNDQyOTNiMGFhNzc4YmUyIn19fQ==
-
+      dropChance: 1.0
 mobs:
    wraith:
       base: WITHER_SKELETON
@@ -49,6 +49,6 @@ mobs:
       helm: wraith_skull
       chest: wraith_chest
       potions:
-         - INVISIBILITY 1 
-         - SLOWNESS 1
+         INVISIBILITY: 1 
+         SLOWNESS: 1
        
