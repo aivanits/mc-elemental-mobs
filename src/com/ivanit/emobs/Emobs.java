@@ -47,37 +47,26 @@ public class Emobs extends JavaPlugin
     {
     	// enable plugin, load configuration
     	log("enabling Elemental Mobs");
-    	cfg = getConfig();
     	
+    	log("saving default config file...");
     	this.saveDefaultConfig();
-    	
-//    	cfg.addDefault("testConfigVal", true);
-//    	cfg.addDefault("items.test1", true);
-//    	cfg.addDefault("items.test2", true);
-//    	cfg.addDefault("mobs.test1", true);
-//    	cfg.addDefault("mobs.test1.attr1", true);
-//    	cfg.addDefault("mobs.test1.attr2", true);
-//    	cfg.addDefault("mobs.test2", true);
-//    	cfg.addDefault("mobs.test2.attr1", true);
-//    	cfg.addDefault("mobs.test2.attr2", true);
-    	
-    	cfg.options().copyDefaults(true);
-        saveConfig();
-        Bukkit.getLogger().info("loading config file...");
+    	log("loading config file...");
+    	cfg = getConfig();
         
         // loads all the custom mobs
+        log("parsing config file...");
         mymobs = new ConfigParser(cfg);
         mymobs.loadCfg();
         
         // start the command listener
-        Bukkit.getLogger().info("starting command listener...");
+        log("starting command listener...");
         this.getCommand("mypig").setExecutor(new CommandHandler(mymobs));
         
         // create and start the mob spawn listener
-        Bukkit.getLogger().info("starting mob spawn listener...");
+        log("starting mob spawn listener...");
         SpawnRegister mySpReg = new SpawnRegister(mymobs);
         this.getServer().getPluginManager().registerEvents(mySpReg, this);
         
-        Bukkit.getLogger().info("Finished Loading!");
+        log("Finished Loading!");
     }
 }

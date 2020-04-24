@@ -46,12 +46,12 @@ public class ConfigParser
 		
 	public void loadCfg()
 	{
-		log("loading custom items...");
 		//	parse all the custom items	
 		//	getKeys(deep = false) means we only get the top level keys under "items"	
 		
 		if (cfg.isConfigurationSection("items"))
 		{
+			log("loading custom items...");
 			itemList = cfg.getConfigurationSection("items").getKeys(false);
 			for ( String item_str : itemList )
 			{
@@ -68,9 +68,9 @@ public class ConfigParser
 		}
 		
 		
-		log("loading custom heads...");
 		if (cfg.isConfigurationSection("heads"))
 		{
+			log("loading custom heads...");
 			headList = cfg.getConfigurationSection("heads").getKeys(false);
 			for ( String head_str : headList )
 			{
@@ -94,10 +94,9 @@ public class ConfigParser
 		CustomMob.setConfigs(cfg, item_configs);
 
 		//	go over the mob list
-		log("loading custom mobs config...");	
-		
 		if (cfg.isConfigurationSection("mobs"))
 		{
+			log("loading custom mobs config...");
 			mobList = cfg.getConfigurationSection("mobs").getKeys(false);
 			
 			log("parsing custom mob data...");

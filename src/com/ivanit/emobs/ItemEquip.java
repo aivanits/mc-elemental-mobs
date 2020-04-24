@@ -4,9 +4,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemEquip {
-	ItemStack item = null;
-	float dropChance = 0.2F;
+	ItemStack item = new ItemStack(Material.AIR);
+	float dropChance = 0.0F;
 	boolean valid = false;
+	
+	public ItemEquip()
+	{
+		valid = false;
+	}
 	
 	public ItemEquip(ItemStack in_item, float in_chance)
 	{

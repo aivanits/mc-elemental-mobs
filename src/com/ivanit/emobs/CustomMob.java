@@ -43,14 +43,14 @@ public class CustomMob
 	boolean name_vis = false;
     
 	// held items
-	ItemEquip heldItem = null;
-	ItemEquip heldItem_ofh = null;
+	ItemEquip heldItem = new ItemEquip();
+	ItemEquip heldItem_ofh = new ItemEquip();
        
     // armor
-	ItemEquip helm = null;
-	ItemEquip chest = null;
-	ItemEquip leg = null;
-	ItemEquip boot = null;
+	ItemEquip helm = new ItemEquip();
+	ItemEquip chest = new ItemEquip();
+	ItemEquip leg = new ItemEquip();
+	ItemEquip boot = new ItemEquip();
 	
 	// potion effects
 	Set<PotionEffect> effects = Collections.emptySet();
@@ -75,13 +75,17 @@ public class CustomMob
 	public ItemEquip tryItem(String item_path)
 	{
 		String item_name = "mobs." + mob_ID + "." + item_path;
-		if (Material.matchMaterial(item_name) == null)
+		if (item_cfg.containsKey(item_name))
 		{
 			return item_cfg.get(item_name);
 		}
+		else if (Material.matchMaterial(item_name) != null)
+		{
+			return new ItemEquip(Material.matchMaterial(item_name), 0.5F);
+		}
 		else
 		{
-			return new ItemEquip(Material.getMaterial(item_name), 0.2F);
+			return new ItemEquip();
 		}
 	}
 	
@@ -156,10 +160,8 @@ public class CustomMob
 	{
 		if (rand.nextFloat() < chance)
     	{
-    		
 			LivingEntity mypig = (LivingEntity) loc.getWorld().spawnEntity(loc, base);
 						
-			
 			for (PotionEffect efct : effects)
 			{
 				mypig.addPotionEffect(efct);
@@ -180,7 +182,6 @@ public class CustomMob
 				equip.setItemInOffHand(heldItem_ofh.item);
 				equip.setItemInOffHandDropChance(heldItem_ofh.dropChance);
 			}
-	
 	
 			if (helm.valid)
 			{
